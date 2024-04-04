@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendance Data</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+      .actions button {
+        padding: 5px 10px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        margin-right: 5px; /* Added margin-right */
+      }
+      .actions button:last-child {
+        margin-right: 0; /* Remove margin-right for the last button */
+      }
+      .actions button:hover {
+        background-color: #0056b3;
+      }
+      .home-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Total Present</th>
+          <th>Total Absent</th>
+          <th>Total Classes</th>
+          <th>Attendance Percentage</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in attendance_data %}
+        <tr>
+          <td>{{ data.subject.name }}</td>
+          <td>{{ data.total_present }}</td>
+          <td>{{ data.total_absent }}</td>
+          <td>{{ data.total_classes }}</td>
+          <td>{{ data.attendance_percentage }}%</td>
+          <td class="actions">
+            <form
+              method="post"
+              action="{% url 'update_attendance' data.subject.id %}"
+            >
+              {% csrf_token %}
+              <button type="submit" name="action" value="present">
+                Present
+              </button>
+              <br />
+              <br />
+              <button type="submit" name="action" value="absent">Absent</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a class="home-link" href="{% url 'home' %}">HOME</a>
+  </body>
+</html>

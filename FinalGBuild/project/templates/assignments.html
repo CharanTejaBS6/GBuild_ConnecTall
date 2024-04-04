@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assignments</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 {
+        margin-bottom: 10px;
+      }
+      .assignment-card {
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .assignment-card h1 {
+        margin-bottom: 5px;
+      }
+      .assignment-card p {
+        margin-bottom: 10px;
+      }
+      .assignment-card a {
+        text-decoration: none;
+        color: #007bff;
+        margin-right: 10px;
+      }
+      .assignment-card form {
+        display: inline-block;
+        margin: 0;
+      }
+      .add-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Assignments</h1>
+    {% for assignment in assignments %}
+    <div class="assignment-card">
+      <h1><strong>{{ assignment.name }}</strong></h1>
+      <p>{{ assignment.status }}</p>
+      <!-- Display other assignment details -->
+      <a href="{% url 'edit_assignment' assignment.id %}">Edit</a>
+      <form action="{% url 'delete_assignment' assignment.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+    {% endfor %}
+    <a class="add-link" href="{% url 'add_assignment' %}">Add New Assignment</a>
+    <br />
+    <a href="{% url 'home' %}">Home</a>
+  </body>
+</html>
